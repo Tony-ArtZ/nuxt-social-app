@@ -1,3 +1,17 @@
+<script setup>
+let user = useSupabaseUser()
+const router = useRouter()
+const client = useSupabaseAuthClient()
+
+const signOut = async() => {
+    client.auth.signOut()
+}
+
+const signIn = () => {
+    router.push('/login')
+} 
+</script>
+
 <template>
     <div class="w-full h-16 bg-sky-950 flex fixed items-center justify-evenly">
         <button class="text-green-400">
@@ -9,8 +23,11 @@
                 <Icon name="material-symbols:search" size="22" />
             </button>
         </div>
-        <button class="text-green-400">
+        <button v-if="user" @click.prevent="signOut" class="text-green-400">
             <Icon name="material-symbols:add-box" size="32" />
+        </button>
+        <button v-else @click.prevent="signIn" class="text-green-400">
+            <Icon name="material-symbols:person-add" size="32" />
         </button>
     </div>
 </template>
