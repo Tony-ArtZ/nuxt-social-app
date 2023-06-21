@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-16 bg-sky-950 flex items-center justify-evenly">
+    <div class="w-full h-16 bg-sky-950 flex fixed items-center justify-evenly">
         <button class="text-green-400">
             <Icon name="material-symbols:menu" size="32" />
         </button>
