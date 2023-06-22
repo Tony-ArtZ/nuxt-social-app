@@ -2,7 +2,15 @@
 let user = useSupabaseUser()
 const router = useRouter()
 const client = useSupabaseAuthClient()
+let sideBar = ref(false)
 
+const openSideBar = () => {
+  sideBar.value = true
+}
+
+const closeSideBar = () => {
+  sideBar.value = false
+}
 const signOut = async() => {
     client.auth.signOut()
 }
@@ -10,11 +18,13 @@ const signOut = async() => {
 const signIn = () => {
     router.push('/login')
 } 
+
 </script>
 
 <template>
     <div class="w-full h-16 bg-sky-950 flex fixed items-center justify-evenly">
-        <button class="text-green-400">
+      <sidebar :side-bar-open="sideBar" @side-bar-close="closeSideBar"/>
+        <button @click.prevent="openSideBar" class="text-green-400">
             <Icon name="material-symbols:menu" size="32" />
         </button>
         <div class="border-solid border-4 w-52 flex bg-slate-800 border-green-400 rounded-full ">
