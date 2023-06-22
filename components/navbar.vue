@@ -22,7 +22,7 @@ const signIn = () => {
 </script>
 
 <template>
-    <div class="w-full h-16 bg-sky-950 flex fixed items-center justify-evenly">
+    <div class="w-full z-20 h-16 bg-sky-950 flex fixed items-center justify-evenly">
       <sidebar :side-bar-open="sideBar" @side-bar-close="closeSideBar"/>
         <button @click.prevent="openSideBar" class="text-green-400">
             <Icon name="material-symbols:menu" size="32" />

@@ -15,7 +15,7 @@ const props = defineProps({
         <div class="flex items-center w-full gap-4">
             <img
                 :src="profileUrl"
-                class="rounded-full object-cover aspect-square w-12"
+                class="z-10 rounded-full object-cover aspect-square w-12"
             />
             <h6 class="text-md font-bold text-white">{{userName}}</h6>
         </div>
@@ -23,7 +23,7 @@ const props = defineProps({
             {{content}}
         </p>
         <div class="w-full grid place-items-center">
-            <img v-if="imageUrl" :src="imageUrl" class="w-80 mb-4 rounded-xl aspect-sqiare object-cover"/>
+            <img v-if="imageUrl" :src="imageUrl" class="w-80 z-10 mb-4 rounded-xl aspect-sqiare object-cover"/>
         </div>
         <div>
             <button class="mr-2"><icon class="text-green-400" name="material-symbols:favorite-outline" size="24"/></button>
