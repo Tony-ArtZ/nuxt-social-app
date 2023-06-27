@@ -1,9 +1,13 @@
 <script setup>
+
+definePageMeta({middleware: ['auth']})
+
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 let imageBlob = ref();
 let previewImage = ref();
 let userName = ref();
+const router = useRouter()
 
 const imageChangeHandler = (e) => {
   const file = e.target.files[0];
@@ -17,13 +21,23 @@ const createAccount = async () => {
       throw new Error("You must select an image to upload.");
     }
     const imageExtention = imageBlob.value.type.split("/")[1]
-    const path = `/${user.id}/avatar.${imageExtention}`;
+    const path = `/${user.value.id}/avatar.${imageExtention}`;
     let { error: uploadError } = await supabase.storage
       .from("users")
-      .upload(path, imageBlob.value);
+      .upload(path, imageBlob.value, {upsert: true});
     if (uploadError) throw uploadError;
+    const userUploadData = {
+      id: user.value.id,
+      profile_picture: `https://sxpvqgwlnbaptmslnlcs.supabase.co/storage/v1/object/public/users/${user.value.id}/avatar.png` ,
+      user_name: userName.value,
+      display_name: userName.value,
+    }
+
+    let {data, error} = await supabase.from("users").upsert(userUploadData)
+    if(error) throw error
+    else router.push(`/users/${user.value.id}`)
   } catch (error) {
-    alert(error);
+    alert(JSON.stringify(error));
   }
 };
 </script>

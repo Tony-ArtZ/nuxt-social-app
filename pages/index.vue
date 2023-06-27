@@ -1,8 +1,11 @@
 <script setup>
 const router = useRouter()
 const user = useSupabaseUser()
+const client = useSupabaseClient()
 
+definePageMeta({middleware: ['userdata']})
 </script>
+
 <template>
     <section class="flex pt-20 overflow-scroll justify-center flex-col">
       <post :id=1 userName="TonyArtZ" content="Hello everyone" profileUrl="https://pbs.twimg.com/profile_images/1645397579138732032/6i2hNRCW_400x400.jpg" :likeCount="20"/>
