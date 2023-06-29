@@ -10,7 +10,7 @@ const { data, error } = await client
   .eq("id", user.value.id);
 let imageBlob = ref();
 let previewImage = ref(data[0].profile_picture);
-let userName = ref(data[0].display_name);
+let displayName = ref(data[0].display_name);
 const router = useRouter();
 
 const imageChangeHandler = (e) => {
@@ -18,6 +18,25 @@ const imageChangeHandler = (e) => {
   imageBlob.value = file;
   previewImage.value = URL.createObjectURL(file);
 };
+
+const editAccount = async () => {
+  try {
+    if (previewImage.value !== data[0].profile_picture) {
+    const imageExtention = imageBlob.value.type.split("/")[1]
+    const path = `/${user.value.id}/avatar.${imageExtention}`;
+    let { error: uploadError } = await supabase.storage
+      .from("users")
+      .upload(path, imageBlob.value, {upsert: true});
+    if (uploadError) throw uploadError;
+    }
+    const updates = {display_name: displayName.value, profile_picture: `https://sxpvqgwlnbaptmslnlcs.supabase.co/storage/v1/object/public/users/${user.value.id}/avatar.png?date=${Date.now()}`}
+    const {data:uploadData, error} = await supabase.from("users").update(updates).eq("id", user.value.id)
+    if(error) throw(JSON.stringify(error))
+  }
+  catch (error) {
+    alert(error)
+  }
+}
 </script>
 
 <template>
@@ -68,13 +87,14 @@ const imageChangeHandler = (e) => {
           class="rounded-full object-cover w-full aspect-square"
         />
       </label>
-      <!--User Name-->
+      <!--Display Name-->
       <label class="text-start mr-44 mb-2 font-bold text-green-400">
         Display Name:
       </label>
       <input
-        v-model="userName"
-        placeholder="User Name"
+        v-model="displayName"
+        placeholder="Display Name"
+        required
         type="text"
         class="
           rounded-full
@@ -106,16 +126,16 @@ const imageChangeHandler = (e) => {
           bg-slate-800
           border-solid border-4
           h-42
-          w-42
+          w-64
           border-green-400
         "
       />
 
       <button
-        @click.prevent="createAccount"
+        @click.prevent="editAccount"
         class="p-6 w-44 text-lg bg-green-400 font-bold rounded-xl"
       >
-        Submit
+        Save
       </button>
     </section>
   </div>
