@@ -1,13 +1,12 @@
 <script setup>
-
-definePageMeta({middleware: ['auth']})
+definePageMeta({ middleware: ["auth"] });
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 let imageBlob = ref();
 let previewImage = ref();
 let userName = ref();
-const router = useRouter()
+const router = useRouter();
 
 const imageChangeHandler = (e) => {
   const file = e.target.files[0];
@@ -20,22 +19,26 @@ const createAccount = async () => {
     if (!imageBlob.value || imageBlob.value.length === 0) {
       throw new Error("You must select an image to upload.");
     }
-    const imageExtention = imageBlob.value.type.split("/")[1]
+    //blob type is "image/png" we get the half after the "/"
+    const imageExtention = imageBlob.value.type.split("/")[1];
     const path = `/${user.value.id}/avatar.${imageExtention}`;
     let { error: uploadError } = await supabase.storage
       .from("users")
-      .upload(path, imageBlob.value, {upsert: true});
+      .upload(path, imageBlob.value, { upsert: true });
+
     if (uploadError) throw uploadError;
+
     const userUploadData = {
       id: user.value.id,
-      profile_picture: `https://sxpvqgwlnbaptmslnlcs.supabase.co/storage/v1/object/public/users/${user.value.id}/avatar.png` ,
+      profile_picture: `https://sxpvqgwlnbaptmslnlcs.supabase.co/storage/v1/object/public/users/${user.value.id}/avatar.png`,
       user_name: userName.value,
       display_name: userName.value,
-    }
+    };
 
-    let {data, error} = await supabase.from("users").upsert(userUploadData)
-    if(error) throw error
-    else router.push(`/users/${user.value.id}`)
+    let { data, error } = await supabase.from("users").upsert(userUploadData);
+
+    if (error) throw error;
+    else router.push(`/users/${user.value.id}`);
   } catch (error) {
     alert(JSON.stringify(error));
   }
@@ -45,16 +48,7 @@ const createAccount = async () => {
 <template>
   <div class="pt-20 grid place-items-center h-screen w-full">
     <section
-      class="
-        bg-sky-950
-        flex
-        border-green-400 border-4 border-solid
-        flex-col
-        items-center
-        p-4
-        w-full
-        rounded-xl
-      "
+      class="bg-sky-950 flex border-green-400 border-4 border-solid flex-col items-center p-4 w-full rounded-xl"
     >
       <h1 class="w-full text-white p-4 text-start font-bold text-4xl mb-8">
         Create Account
@@ -70,19 +64,7 @@ const createAccount = async () => {
       />
       <label
         for="profile-upload"
-        class="
-          bg-slate-800
-          border-4
-          mb-4
-          border-green-400
-          text-white
-          grid
-          place-items-center
-          font-bold
-          h-32
-          w-32
-          rounded-full
-        "
+        class="bg-slate-800 border-4 mb-4 border-green-400 text-white grid place-items-center font-bold h-32 w-32 rounded-full"
       >
         <img
           v-if="previewImage"
@@ -91,6 +73,7 @@ const createAccount = async () => {
         />
         <div v-else>Upload Image</div>
       </label>
+      
       <!--User Name-->
       <label class="text-start mr-44 mb-2 font-bold text-green-400"
         >User Name:</label
@@ -99,18 +82,7 @@ const createAccount = async () => {
         v-model="userName"
         placeholder="User Name"
         type="text"
-        class="
-          rounded-full
-          mb-12
-          font-bold
-          text-white
-          p-4
-          bg-slate-800
-          border-solid border-4
-          h-12
-          w-42
-          border-green-400
-        "
+        class="rounded-full mb-12 font-bold text-white p-4 bg-slate-800 border-solid border-4 h-12 w-42 border-green-400"
       />
 
       <button

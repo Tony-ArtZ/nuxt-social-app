@@ -25,7 +25,8 @@ let sideBarClass = computed(() =>
         </button>
         <section class="mt-8">
             <!--Home-->
-            <NuxtLink to="/" class="flex gap-2 items-center first:border-t-2 text-2xl text-green-400 border-b-2 p-2 border-green-400">
+            <NuxtLink to="/"
+                class="flex gap-2 items-center first:border-t-2 text-2xl text-green-400 border-b-2 p-2 border-green-400">
                 <Icon name="material-symbols:home-outline-rounded" size="24" /> Home
             </NuxtLink>
             <!--Profile if user exists-->

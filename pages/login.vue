@@ -1,6 +1,6 @@
 <script setup>
 
-definePageMeta({middleware: ['userexists']})
+definePageMeta({ middleware: ['userexists'] })
 
 const user = useSupabaseUser()
 const client = useSupabaseAuthClient()
@@ -11,6 +11,7 @@ let emailSent = ref(false)
 let buttonText = computed(() => { return emailSent.value ? "Resend Email" : "Submit" })
 
 const login = async () => {
+  //email regex
   if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email.value)) {
     alert("Please enter a valid Email")
   }
