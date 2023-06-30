@@ -59,35 +59,44 @@ const editAccount = async () => {
 </script>
 
 <template>
-    <div class="pt-20 grid place-items-center h-screen w-full">
+    <div class="w-full h-screen pt-20 grid place-items-center">
         <section
-            class="bg-sky-950 flex border-green-400 border-4 border-solid flex-col items-center text-center p-4 w-full rounded-xl">
-            <h1 class="w-full text-white p-4 text-start font-bold text-4xl mb-8">
+            class="flex flex-col items-center w-full p-4 text-center border-4 border-green-400 border-solid bg-sky-950 rounded-xl">
+            <h1 class="w-full p-4 mb-8 text-4xl font-bold text-white text-start">
                 Edit Account
             </h1>
+            <!--Banner Picture-->
+            <input required id="banner-upload" @change="imageChangeHandler" type="file" accept="image/jpg, image/png"
+                class="hidden" />
+            <label for="banner-upload"
+                class="relative mb-4 font-bold text-white border-4 border-green-400 w-72 bg-slate-800 grid place-items-center aspect-video">
+                <img  class="object-cover w-full" />
+                <Icon name="material-symbols:edit" size="24"
+                    class="absolute top-0 right-0 w-8 h-8 p-1 text-green-400 border-2 border-green-400 rounded-full bg-slate-800" />
+            </label>
             <!--Profile Picture-->
             <input required id="profile-upload" @change="imageChangeHandler" type="file" accept="image/jpg, image/png"
                 class="hidden" />
             <label for="profile-upload"
-                class="bg-slate-800 border-4 mb-4 relative border-green-400 text-white grid place-items-center font-bold h-24 w-24 rounded-full">
-                <img :src="previewImage" class="rounded-full object-cover w-full aspect-square" />
+                class="relative w-24 h-24 mb-4 font-bold text-white border-4 border-green-400 rounded-full bg-slate-800 grid place-items-center">
+                <img :src="previewImage" class="object-cover w-full rounded-full aspect-square" />
                 <Icon name="material-symbols:edit" size="24"
-                    class="absolute top-0 right-0 text-green-400 bg-slate-800 border-green-400 h-8 p-1 border-2 w-8 rounded-full" />
+                    class="absolute top-0 right-0 w-8 h-8 p-1 text-green-400 border-2 border-green-400 rounded-full bg-slate-800" />
             </label>
             <!--Display Name-->
-            <label class="text-start mr-44 mb-2 font-bold text-green-400">
+            <label class="mb-2 font-bold text-green-400 text-start mr-44">
                 Display Name:
             </label>
             <input v-model="displayName" placeholder="Display Name" required type="text"
-                class="rounded-full mb-12 font-bold text-white p-4 bg-slate-800 border-solid border-4 h-12 w-42 border-green-400" />
+                class="h-12 p-4 mb-12 font-bold text-white border-4 border-green-400 border-solid rounded-full bg-slate-800 w-42" />
 
-            <label class="text-start mr-44 mb-2 font-bold text-green-400">Description:
+            <label class="mb-2 font-bold text-green-400 text-start mr-44">Description:
             </label>
             <!--Description-->
             <textarea v-model="description" placeholder="Description" type="text"
-                class="rounded-xl mb-12 font-medium text-white p-2 bg-slate-800 border-solid border-4 h-48 w-64 border-green-400" />
+                class="w-64 h-48 p-2 mb-12 font-medium text-white border-4 border-green-400 border-solid rounded-xl bg-slate-800" />
 
-            <button @click.prevent="editAccount" class="p-6 w-44 text-lg bg-green-400 font-bold rounded-xl">
+            <button @click.prevent="editAccount" class="p-6 text-lg font-bold bg-green-400 w-44 rounded-xl">
                 Save
             </button>
         </section>
