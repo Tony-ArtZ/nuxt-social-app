@@ -14,6 +14,10 @@ const userData = ref(data[0]);
   <div class="pt-24">
     <div class="w-full h-36 relative bg-green-400">
       <img
+        :src="userData.banner_picture"
+        class="w-full h-full object-cover"
+      />
+      <img
         class="h-20 w-20 absolute -bottom-10 border-4 border-sky-950 left-2 rounded-full"
         :src="userData.profile_picture"
       />

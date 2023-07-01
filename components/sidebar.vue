@@ -2,16 +2,13 @@
 const props = defineProps({
     sideBarOpen: Boolean,
 });
+
+//function call on when the "X" button is pressed 
 const emmits = defineEmits(["sideBarClose"]);
 
 const user = useSupabaseUser();
 
-const dynamicLinkData = reactive({
-    link: user.value ? "/profile" : "/login",
-    text: user.value ? "Profile" : "Login",
-    symbol: user.value ? "material-symbols:person" : "material-symbols:login"
-})
-
+// If closed then move sidebar off screen using reactive vue class bind 
 let sideBarClass = computed(() =>
     props.sideBarOpen ? "" : "-translate-x-[100rem]"
 );
