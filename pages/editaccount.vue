@@ -3,7 +3,6 @@ definePageMeta({ middleware: ["auth"] });
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
-const client = useSupabaseClient();
 const router = useRouter();
 
 //Get default User data
@@ -50,7 +49,7 @@ const editAccount = async () => {
                 .from("users")
                 .upload(path, imageBlob.value, { upsert: true });
             if (uploadError) throw uploadError;
-            updates.profile_picture = `https://sxpvqgwlnbaptmslnlcs.supabase.co/storage/v1/object/public/users/${user.value.id}/avatar.png?date=${Date.now()}`
+            updates.profile_picture = `https://sxpvqgwlnbaptmslnlcs.supabase.co/storage/v1/object/public/users/${user.value.id}/avatar.${imageExtention}?date=${Date.now()}`
         }
 
         //Upload banner if user has changed the image 
@@ -62,7 +61,7 @@ const editAccount = async () => {
                 .from("users")
                 .upload(path, bannerImageBlob.value, { upsert: true });
             if (uploadError) throw uploadError;
-            updates.banner_picture = `https://sxpvqgwlnbaptmslnlcs.supabase.co/storage/v1/object/public/users/${user.value.id}/banner.png?date=${Date.now()}`
+            updates.banner_picture = `https://sxpvqgwlnbaptmslnlcs.supabase.co/storage/v1/object/public/users/${user.value.id}/banner.${imageExtention}?date=${Date.now()}`
         }
 
         //Upload the data
@@ -82,7 +81,7 @@ const editAccount = async () => {
 
 <template>
     <div class="w-full h-screen pt-20 grid place-items-center">
-        <NuxtLink :to="'/user/' + user.id" class="text-green-400 mb-2 w-full font-bold flex items-center text-sm">
+        <NuxtLink :to="'/user/' + user.id" class="flex items-center w-full mb-2 text-sm font-bold text-green-400">
             <Icon name="ic:sharp-close" size="18" /> Cancel
         </NuxtLink>
         <section
@@ -90,12 +89,12 @@ const editAccount = async () => {
             <h1 class="w-full p-4 mb-8 text-4xl font-bold text-white text-start">
                 Edit Account
             </h1>
-            <div class="relative mb-12 w-full ">
+            <div class="relative w-full mb-12">
                 <!--Banner Picture-->
                 <input required id="banner-upload" @change="bannerChangeHandler" type="file" accept="image/jpg, image/png"
                     class="absolute w-1 h-1 -z-50 -top-[100] hidden" />
                 <label for="banner-upload"
-                    class="relative mb-4 font-bold text-white   rounded-xl full bg-slate-800 grid place-items-center h-36">
+                    class="relative mb-4 font-bold text-white rounded-xl full bg-slate-800 grid place-items-center h-36">
                     <img v-if="bannerPreviewImage" :src="bannerPreviewImage" class="object-cover w-full rounded-xl h-36" />
                     <div v-else class="text-green-400">
                         <Icon class="mr-1" name="bi:upload" /> Upload Image
@@ -107,7 +106,7 @@ const editAccount = async () => {
                 <input required id="profile-upload" @change="imageChangeHandler" type="file" accept="image/jpg, image/png"
                     class="absolute w-1 h-1 -z-50 -top-[100] hidden" />
                 <label for="profile-upload"
-                    class="absolute w-20 h-20 mb-6 font-bold text-white border-4 border-sky-950 rounded-full left-4 -bottom-12 bg-slate-800 grid place-items-center">
+                    class="absolute w-20 h-20 mb-6 font-bold text-white border-4 rounded-full border-sky-950 left-4 -bottom-12 bg-slate-800 grid place-items-center">
                     <img :src="previewImage" class="object-cover w-full rounded-full aspect-square" />
                     <Icon name="material-symbols:edit" size="24"
                         class="absolute top-0 right-0 w-8 h-8 p-1 text-green-400 border-2 border-green-400 rounded-full bg-slate-800" />
