@@ -29,14 +29,11 @@ const createPost = async () => {
       const postData = {
         id : postId,
         user_id: user.value.id,
-        content,
+        content: content.value,
       }
 
-      alert(postId)
-        //If images are changed, upload them and add their URL to list of fields to Update
-
         //Upload image if user has changed the image 
-        if (imagePreview && imageBlob) {
+        if (imagePreview.value && imageBlob.value) {
             //blob type is "image/png" we get the half after the "/"
             const imageExtention = imageBlob.value.type.split("/")[1];
           const path = `/${user.value.id}/${postId}.${imageExtention}`;
@@ -49,7 +46,6 @@ const createPost = async () => {
 
       const {error} = await supabase.from("posts").insert(postData)
       if(error) throw error
-
       else router.push("/")
     }
   catch (error) {
