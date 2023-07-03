@@ -10,6 +10,10 @@ let email = ref()
 let emailSent = ref(false)
 let buttonText = computed(() => { return emailSent.value ? "Resend Email" : "Submit" })
 
+watch(user.value, (newValue)=>{
+  if(newValue) 
+    router.push("/")
+})
 const login = async () => {
   //email regex
   if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email.value)) {
