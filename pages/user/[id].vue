@@ -2,10 +2,10 @@
 const route = useRoute();
 const id = route.params.id;
 const user = useSupabaseUser();
-const client = useSupabaseClient();
+const supabase = useSupabaseClient();
 
 //Get User data
-const { data, error } = await client.from("users").select("*").eq("id", id);
+const { data, error } = await supabase.from("users").select("*").eq("id", id);
 
 const userData = ref(data[0]);
 </script>

@@ -3,7 +3,7 @@
 definePageMeta({ middleware: ['userexists'] })
 
 const user = useSupabaseUser()
-const client = useSupabaseAuthClient()
+const supabase = useSupabaseAuthClient()
 const router = useRouter()
 
 let email = ref()
@@ -20,7 +20,7 @@ const login = async () => {
     alert("Please enter a valid Email")
   }
   else {
-    const { data, error } = await client.auth.signInWithOtp({ email: email.value })
+    const { data, error } = await supabase.auth.signInWithOtp({ email: email.value })
     if (error) {
       alert(error)
     }
