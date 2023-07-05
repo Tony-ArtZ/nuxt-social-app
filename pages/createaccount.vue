@@ -38,7 +38,7 @@ const createAccount = async () => {
     let { data, error } = await supabase.from("users").upsert(userUploadData);
 
     if (error) throw error;
-    else router.push(`/users/${user.value.id}`);
+    else router.push(`/user/${user.value.id}`);
   } catch (error) {
     alert(JSON.stringify(error));
   }
@@ -71,7 +71,7 @@ const createAccount = async () => {
           :src="previewImage"
           class="rounded-full object-cover w-full aspect-square"
         />
-        <div v-else>Upload Image</div>
+        <div v-else class="flex-col flex justify-center items-center p-2 text-sm"><Icon class="text-green-400" name="material-symbols:upload" size="24"/>Upload Image</div>
       </label>
       
       <!--User Name-->

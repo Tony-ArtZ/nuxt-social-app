@@ -1,4 +1,6 @@
 <script setup>
+definePageMeta({ middleware: ['userdata'] })
+
 const route = useRoute();
 const id = route.params.id;
 const user = useSupabaseUser();

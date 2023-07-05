@@ -1,4 +1,6 @@
 <script setup>
+definePageMeta({ middleware: ['userdata'] })
+
 const router = useRouter()
 const user = useSupabaseUser()
 const client = useSupabaseClient()
