@@ -1,12 +1,9 @@
 <template>
-  <div class="bg-slate-800">
+  <div class="bg-white">
     <navbar/>
     <NuxtPage/>
   </div>
 </template>
 
 <style>
-body {
-  background-color:#1e293b;
-}
 </style>

@@ -11,7 +11,7 @@ definePageMeta({ middleware: ['userdata'] })
 </script>
 
 <template>
-  <section class="flex flex-col justify-center pt-20 overflow-scroll">
+  <section class="flex flex-col justify-center px-4 pt-20 overflow-scroll gap-4">
     <post v-for="post in posts"  :post="post" />
   </section>
 </template>

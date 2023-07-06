@@ -32,21 +32,21 @@ const search = () => {
 </script>
 
 <template>
-    <div class="fixed z-20 flex items-center w-full h-16 shadow-2xl bg-sky-950 justify-evenly">
+    <div class="fixed z-20 flex items-center w-full h-16 shadow-2xl bg-neu-yellow-light justify-evenly">
         <sidebar :side-bar-open="sideBar" @side-bar-close="closeSideBar" />
-        <button @click.prevent="openSideBar" class="text-green-400">
+        <button @click.prevent="openSideBar" class="text-neu-green drop-shadow-neu-border">
             <Icon name="material-symbols:menu" size="32" />
         </button>
-        <div class="flex border-4 border-green-400 border-solid rounded-full w-52 bg-slate-800">
-            <input v-model="searchQuery" class="w-full h-10 p-4 font-bold text-white bg-transparent rounded-l-full" />
-            <button @click.prevent="search" class="w-12 font-bold bg-green-400 rounded-r-full grid place-content-center text-sky-950">
+        <div class="flex border-4 border-black border-solid rounded-full shadow-neu-border w-52 bg-neu-green-light">
+            <input v-model="searchQuery" class="w-full h-10 p-4 font-bold text-black bg-transparent rounded-l-full" />
+            <button @click.prevent="search" class="w-12 font-bold border-l-4 border-black rounded-r-full bg-neu-yellow grid place-content-center text-sky-950">
                 <Icon name="material-symbols:search" size="22" />
             </button>
         </div>
-        <button v-if="user" @click.prevent="createPost" class="text-green-400">
-            <Icon name="material-symbols:add-box" size="32" />
+        <button v-if="user" @click.prevent="createPost" class="text-neu-green drop-shadow-neu-border">
+            <Icon  name="material-symbols:add-box" size="32" />
         </button>
-        <button v-else @click.prevent="signIn" class="text-green-400">
+        <button v-else @click.prevent="signIn" class="text-neu-green drop-shadow-neu-border">
             <Icon name="material-symbols:person-add" size="32" />
         </button>
     </div>

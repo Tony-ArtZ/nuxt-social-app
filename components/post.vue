@@ -54,25 +54,25 @@ const like =  async() => {
 </script>
 
 <template>
-    <div class="w-full p-4 border-b-2 border-green-400 border-solid first:border-t-2 bg-sky-950">
+    <div class="w-full p-4 my-2 border-4 border-black border-solid even:bg-neu-yellow-light odd:bg-neu-green-light shadow-neu-black first:border-t-2">
         <div class="flex items-center w-full gap-4">
-            <img :src="post.users.profile_picture" class="z-10 object-cover w-12 rounded-full aspect-square" />
+            <img :src="post.users.profile_picture" class="z-10 object-cover w-12 border-black rounded-full drop-shadow-neu-border aspect-square" />
             <div>
-                <h6 class="block font-bold text-white text-md">{{ post.users.display_name }}</h6>
-                <h6 class="block text-sm text-green-400">@{{ post.users.user_name }}</h6>
+                <h6 class="block font-bold text-neu-green drop-shadow-neu-border text-md">{{ post.users.display_name }}</h6>
+                <h6 class="block text-sm font-bold text-black">@{{ post.users.user_name }}</h6>
             </div>
         </div>
-        <p class="my-4 ml-4 text-white">
+        <p class="my-4 ml-4 text-black">
             {{ post.content }}
         </p>
         <div class="w-full grid place-items-center">
-            <img v-if="post.picture" :src="post.picture" class="z-10 object-cover mb-4 w-80 rounded-xl aspect-square" />
+            <img v-if="post.picture" :src="post.picture" class="z-10 object-cover mb-4 border-4 border-black w-80 rounded-xl aspect-square" />
         </div>
         <div>
             <button @click.prevent="like" class="mr-2">
-                <icon class="text-green-400" :name="likeIconState" size="24" />
+                <icon class="text-neu-green drop-shadow-neu-border" :name="likeIconState" size="24" />
             </button>
-            <span class="text-white text-md">{{ likeCount }}</span>
+            <span class="font-bold text-black text-md">{{ likeCount }}</span>
         </div>
     </div>
 </template>

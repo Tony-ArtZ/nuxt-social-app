@@ -13,33 +13,35 @@ const userData = ref(data[0]);
 </script>
 
 <template>
-  <div class="pt-24">
-    <div class="w-full h-36 relative bg-green-400">
+    <div class="px-2 pt-24">
+  <div class="border-4 border-black shadow-neu-black bg-neu-green-light">
+    <div class="relative w-full bg-green-400 h-36">
       <img
         :src="userData.banner_picture"
-        class="w-full h-full object-cover"
+        class="object-cover w-full h-full"
       />
       <img
-        class="h-20 w-20 absolute -bottom-10 border-4 border-sky-950 left-2 rounded-full"
+        class="absolute w-20 h-20 rounded-full -bottom-10 drop-shadow-neu-border left-2"
         :src="userData.profile_picture"
       />
     </div>
-    <section class="px-2 h-24">
+    <section class="h-24 px-2">
       <div class="float-left">
-        <h1 class="text-white mt-12 text-2xl font-bold">
+        <h1 class="mt-12 text-2xl font-bold text-neu-green drop-shadow-neu-border">
           {{ userData.display_name }}
         </h1>
-        <h6 class="text-green-400 text-sm">@{{ userData.user_name }}</h6>
+        <h6 class="text-sm text-green-400">@{{ userData.user_name }}</h6>
       </div>
       <NuxtLink
       to="/editaccount"
-      class="border-green-400 text-green-400 text-sm mr-2 font-bold border-2 p-2 float-right mt-12 rounded-full hover:bg-green-400 hover:text-slate-800 hover:shadow-glow-green transition-all ease-in-out duration-300"
+      class="float-right p-2 mt-12 mr-2 text-sm font-bold text-green-400 border-2 border-green-400 rounded-full hover:bg-green-400 hover:text-slate-800 hover:shadow-glow-green transition-all ease-in-out duration-300"
       >
         Edit Profile
       </NuxtLink>
     </section>
-      <section class="text-white p-4 border-b-2 border-sky-950">
+      <section class="p-4 text-white border-b-2 border-sky-950">
         {{ userData.description }}
       </section>
 </div>
+    </div>
 </template>
