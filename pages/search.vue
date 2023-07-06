@@ -18,9 +18,9 @@ watch(()=>route.query.search, async (value) => {
 </script>
 
 <template>
-  <section class="flex flex-col justify-center px-4 pt-20 overflow-scroll gap-4">
+  <section class="flex flex-col justify-center px-4 pt-20 overflow-scroll min-h-screen gap-4">
     <post v-if="posts.length > 0" v-for="post in posts" :post="post" />
-    <div class="p-4 font-bold text-center text-white" v-else>
+    <div class=" p-4 font-bold text-center text-black text-xl transform rotate-12 bg-neu-yellow border-4 border-black rounded-xl shadow-neu-black" v-else>
       Sorry, No results found...
     </div>
   </section>
