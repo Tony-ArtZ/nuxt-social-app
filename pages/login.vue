@@ -33,15 +33,15 @@ const login = async () => {
 </script>
 
 <template>
-  <div class="pt-20 grid place-items-center h-screen w-full">
+  <div class="w-full h-screen px-4 pt-20 grid place-items-center bg-neu-green-light">
     <section
-      class="bg-sky-950 flex border-green-400 border-4 border-solid flex-col items-center p-4 h-96  w-full rounded-xl">
-      <h1 class="w-full text-white p-4 text-start font-bold text-4xl mb-8">Login</h1>
-      <label class="text-start mr-44 mb-2 font-bold text-green-400">Email:</label>
+      class="flex flex-col items-center w-full p-4 bg-white border-4 border-black border-solid shadow-neu-black h-96">
+      <h1 class="w-full p-4 mb-8 text-4xl font-bold text-black text-start">Login</h1>
+      <label class="mb-2 font-bold text-black text-start mr-44">Email:</label>
       <input v-model="email" placeholder="Email" type="email"
-        class="rounded-full mb-12 font-bold text-white p-4 bg-slate-800 border-solid border-4 h-12 w-42 border-green-400" />
-      <button @click="login" class="p-6 w-44 text-lg bg-green-400 font-bold rounded-xl">{{ buttonText }}</button>
-      <p v-if="emailSent" class="text-green-400 mt-4">Please check your email for login link!</p>
+        class="h-12 p-4 mb-12 font-bold text-black border-4 border-black border-solid bg-neu-yellow-light shadow-neu-black w-42" />
+      <button @click="login" class="p-6 text-lg font-bold border-4 border-black bg-neu-green w-44 rounded-xl shadow-neu-black">{{ buttonText }}</button>
+      <p v-if="emailSent" class="my-4 mt-4 font-bold text-black">Please check your email for login link!</p>
     </section>
   </div>
 </template>

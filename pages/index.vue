@@ -5,7 +5,7 @@ const router = useRouter()
 const user = useSupabaseUser()
 const client = useSupabaseClient()
 
-const {data:posts, error} = await client.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count)").order("created_at", {ascending: false})
+const {data:posts, error} = await client.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").order("created_at", {ascending: false})
 
 definePageMeta({ middleware: ['userdata'] })
 </script>

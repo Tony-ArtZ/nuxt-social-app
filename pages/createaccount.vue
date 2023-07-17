@@ -46,11 +46,11 @@ const createAccount = async () => {
 </script>
 
 <template>
-  <div class="pt-20 grid place-items-center h-screen w-full">
+  <div class="w-full h-screen px-4 pt-20 grid place-items-center bg-neu-green-light">
     <section
-      class="bg-sky-950 flex border-green-400 border-4 border-solid flex-col items-center p-4 w-full rounded-xl"
+      class="flex flex-col items-center w-full p-4 bg-white border-4 border-black shadow-neu-black"
     >
-      <h1 class="w-full text-white p-4 text-start font-bold text-4xl mb-8">
+      <h1 class="w-full p-4 mb-8 text-4xl font-bold text-black text-start">
         Create Account
       </h1>
       <!--Profile Picture-->
@@ -64,30 +64,30 @@ const createAccount = async () => {
       />
       <label
         for="profile-upload"
-        class="bg-slate-800 border-4 mb-4 border-green-400 text-white grid place-items-center font-bold h-32 w-32 rounded-full"
+        class="w-32 h-32 mb-4 font-bold text-white border-4 border-black rounded-full shadow-neu-black bg-neu-yellow-light grid place-items-center"
       >
         <img
           v-if="previewImage"
           :src="previewImage"
-          class="rounded-full object-cover w-full aspect-square"
+          class="object-cover w-full rounded-full aspect-square"
         />
-        <div v-else class="flex-col flex justify-center items-center p-2 text-sm"><Icon class="text-green-400" name="material-symbols:upload" size="24"/>Upload Image</div>
+        <div v-else class="flex flex-col items-center justify-center p-2 text-sm font-black text-black"><Icon class="text-neu-yellow drop-shadow-neu-border" name="material-symbols:upload" size="24"/>Upload Image</div>
       </label>
       
       <!--User Name-->
-      <label class="text-start mr-44 mb-2 font-bold text-green-400"
+      <label class="mb-2 font-bold text-black text-start mr-44"
         >User Name:</label
       >
       <input
         v-model="userName"
         placeholder="User Name"
         type="text"
-        class="rounded-full mb-12 font-bold text-white p-4 bg-slate-800 border-solid border-4 h-12 w-42 border-green-400"
+        class="h-12 p-4 mb-12 font-bold text-black border-4 border-black shadow-neu-black bg-neu-yellow-light w-42"
       />
 
       <button
         @click.prevent="createAccount"
-        class="p-6 w-44 text-lg bg-green-400 font-bold rounded-xl"
+        class="p-6 text-lg font-bold border-4 border-black bg-neu-green w-44 shadow-neu-black rounded-xl"
       >
         Submit
       </button>

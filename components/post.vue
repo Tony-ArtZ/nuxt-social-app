@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Post } from '~/.nuxt/components';
 
 interface Post {
     content: string,
@@ -7,7 +6,8 @@ interface Post {
     id: string,
     picture: string,
     user_id: string,
-        likes: [{count: number}],
+    likes: [{count: number}],
+    posts: [{count: number}],
     users: {
         display_name: string,
         profile_picture: string,
@@ -16,11 +16,13 @@ interface Post {
 }
 
 const props = defineProps<{
-    post: Post
+    post: Post,
+    replyTo?: String
 }>()
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
+const router = useRouter();
 
 let likeCount = ref(props.post.likes[0].count)
 const liked = ref(false)
@@ -51,10 +53,13 @@ const like =  async() => {
     }
 }
 
+const openPost = ()=>{
+    router.push(`/post/${props.post.id}`)
+}
 </script>
 
 <template>
-    <div class="w-full p-4 my-2 border-4 border-black border-solid even:bg-neu-yellow-light odd:bg-neu-green-light shadow-neu-black first:border-t-2">
+    <div @click.prevent="openPost" class="w-full p-4 my-2 border-4 border-black border-solid even:bg-neu-yellow-light odd:bg-neu-green-light shadow-neu-black first:border-t-2">
         <div class="flex items-center w-full gap-4">
             <img :src="post.users.profile_picture" class="z-10 object-cover w-12 border-black rounded-full drop-shadow-neu-border aspect-square" />
             <div>
@@ -68,11 +73,17 @@ const like =  async() => {
         <div class="w-full grid place-items-center">
             <img v-if="post.picture" :src="post.picture" class="z-10 object-cover mb-4 border-4 border-black w-80 rounded-xl aspect-square" />
         </div>
+        <section class="flex pl-4 gap-4">
         <div>
             <button @click.prevent="like" class="mr-2">
                 <icon class="text-neu-green drop-shadow-neu-border" :name="likeIconState" size="24" />
             </button>
             <span class="font-bold text-black text-md">{{ likeCount }}</span>
         </div>
+        <div>
+            <icon class="mr-2 text-neu-green drop-shadow-neu-border" name="material-symbols:mode-comment-outline" size="24"/>
+            <span class="font-bold text-black text-md">{{ post.posts[0].count }}</span>
+        </div>
+        </section>
     </div>
 </template>

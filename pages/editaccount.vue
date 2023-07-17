@@ -6,7 +6,7 @@ const user = useSupabaseUser();
 const router = useRouter();
 
 //Get default User data
-const { data, error } = await client
+const { data, error } = await supabase
     .from("users")
     .select("*")
     .eq("id", user.value.id);
@@ -80,13 +80,13 @@ const editAccount = async () => {
 </script>
 
 <template>
-    <div class="w-full h-screen pt-20 grid place-items-center">
+    <div class="w-full h-full px-4 pt-20 grid place-items-center bg-neu-green-light">
         <NuxtLink :to="'/user/' + user.id" class="flex items-center w-full mb-2 text-sm font-bold text-green-400">
             <Icon name="ic:sharp-close" size="18" /> Cancel
         </NuxtLink>
         <section
-            class="flex flex-col items-center w-full p-4 text-center border-4 border-green-400 border-solid bg-sky-950 rounded-xl">
-            <h1 class="w-full p-4 mb-8 text-4xl font-bold text-white text-start">
+            class="flex flex-col items-center w-full p-4 text-center bg-white border-4 border-black shadow-neu-black">
+            <h1 class="w-full p-4 mb-8 text-4xl font-bold text-black text-start">
                 Edit Account
             </h1>
             <div class="relative w-full mb-12">
@@ -94,38 +94,38 @@ const editAccount = async () => {
                 <input required id="banner-upload" @change="bannerChangeHandler" type="file" accept="image/jpg, image/png"
                     class="absolute w-1 h-1 -z-50 -top-[100] hidden" />
                 <label for="banner-upload"
-                    class="relative mb-4 font-bold text-white rounded-xl full bg-slate-800 grid place-items-center h-36">
-                    <img v-if="bannerPreviewImage" :src="bannerPreviewImage" class="object-cover w-full rounded-xl h-36" />
-                    <div v-else class="text-green-400">
+                    class="relative mb-4 font-bold text-black outline-4 outline outline-black full bg-neu-yellow-light grid place-items-center h-36">
+                    <img v-if="bannerPreviewImage" :src="bannerPreviewImage" class="object-cover w-full h-36" />
+                    <div v-else class="text-black">
                         <Icon class="mr-1" name="bi:upload" /> Upload Image
                     </div>
                     <Icon name="material-symbols:edit" size="24"
-                        class="absolute top-0 right-0 w-8 h-8 p-1 mt-2 mr-2 text-green-400 border-2 border-green-400 rounded-full bg-slate-800" />
+                        class="absolute top-0 right-0 w-8 h-8 p-1 mt-2 mr-2 bg-transparent border-2 rounded-full border-neu-green drop-shadow-neu-border text-neu-yellow" />
                 </label>
                 <!--Profile Picture-->
                 <input required id="profile-upload" @change="imageChangeHandler" type="file" accept="image/jpg, image/png"
                     class="absolute w-1 h-1 -z-50 -top-[100] hidden" />
                 <label for="profile-upload"
-                    class="absolute w-20 h-20 mb-6 font-bold text-white border-4 rounded-full border-sky-950 left-4 -bottom-12 bg-slate-800 grid place-items-center">
+                    class="absolute w-20 h-20 mb-6 font-bold text-white border-4 border-black rounded-full left-4 -bottom-12 grid place-items-center shadow-neu-border">
                     <img :src="previewImage" class="object-cover w-full rounded-full aspect-square" />
                     <Icon name="material-symbols:edit" size="24"
-                        class="absolute top-0 right-0 w-8 h-8 p-1 text-green-400 border-2 border-green-400 rounded-full bg-slate-800" />
+                        class="absolute top-0 right-0 w-8 h-8 p-1 bg-transparent border-2 rounded-full text-neu-yellow drop-shadow-neu-border border-neu-green" />
                 </label>
             </div>
             <!--Display Name-->
-            <label class="mb-2 font-bold text-green-400 text-start mr-44">
+            <label class="mb-2 font-bold text-black text-start mr-44">
                 Display Name:
             </label>
             <input v-model="displayName" placeholder="Display Name" required type="text"
-                class="h-12 p-4 mb-12 font-bold text-white border-4 border-green-400 border-solid rounded-full bg-slate-800 w-72" />
+                class="h-12 p-4 mb-12 font-bold text-black border-4 border-black bg-neu-yellow-light shadow-neu-black w-72" />
 
-            <label class="mb-2 font-bold text-green-400 text-start mr-44">Description:
+            <label class="mb-2 font-bold text-black text-start mr-44">Description:
             </label>
             <!--Description-->
             <textarea v-model="description" placeholder="Description" type="text"
-                class="p-2 mb-12 font-medium text-white border-4 border-green-400 border-solid h-44 w-72 rounded-xl bg-slate-800" />
+                class="p-2 mb-12 font-medium text-black border-4 border-black border-solid h-44 w-72 bg-neu-yellow-light shadow-neu-black" />
 
-            <button @click.prevent="editAccount" class="p-6 text-lg font-bold bg-green-400 w-44 rounded-xl">
+            <button @click.prevent="editAccount" class="p-6 text-lg font-bold border-4 border-black shadow-neu-black bg-neu-green w-44 rounded-xl">
                 Save
             </button>
         </section>
