@@ -81,6 +81,12 @@ const openPost = ()=>{
             <span class="font-bold text-black text-md">{{ likeCount }}</span>
         </div>
         <div>
+            <button @click.prevent="like" class="mr-2">
+                <icon :class="liked?'text-neu-yellow':'text-neu-green'" class="text-neu-green drop-shadow-neu-border" name="ant-design:retweet-outlined" size="24" />
+            </button>
+            <span class="font-bold text-black text-md">{{ likeCount }}</span>
+        </div>
+        <div>
             <icon class="mr-2 text-neu-green drop-shadow-neu-border" name="material-symbols:mode-comment-outline" size="24"/>
             <span class="font-bold text-black text-md">{{ post.posts[0].count }}</span>
         </div>
