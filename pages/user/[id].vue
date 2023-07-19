@@ -8,7 +8,7 @@ const client = useSupabaseClient();
 
 //Get User data
 const { data, error } = await client.from("users").select("*").eq("id", id);
-const {data:posts, error:postError} = await client.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count)").eq("user_id", user.value.id).order("created_at", {ascending: false})
+const {data:posts, error:postError} = await client.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count), reposts(count)").eq("user_id", user.value.id).order("created_at", {ascending: false})
 
 const userData = ref(data[0]);
 </script>

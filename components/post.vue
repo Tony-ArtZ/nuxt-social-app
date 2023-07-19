@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+import { v4 as uuidv4 } from 'uuid';
+
+
 interface Post {
     content: string,
     created_at: string,
@@ -7,6 +10,7 @@ interface Post {
     picture: string,
     user_id: string,
     likes: [{count: number}],
+    reposts: [{count: number}],
     posts: [{count: number}],
     users: {
         display_name: string,
@@ -25,20 +29,48 @@ const user = useSupabaseUser();
 const router = useRouter();
 
 let likeCount = ref(props.post.likes[0].count)
+let repostCount = ref(props.post.reposts[0].count)
 const liked = ref(false)
-
+const reposted = ref(false)
+console.log(reposted)
 const updateLike = async () => { 
-    const {count:likedCount} = await supabase.from("likes").select("*", {head:true, count:"exact"}).eq("post_id", props.post.id)
-    likeCount.value = likedCount!
-    const {count:likedByUser} = await supabase.from("likes").select("*", {head:true, count:"exact"}).eq("user_id", user.value.id).eq("post_id", props.post.id)
-    liked.value = likedByUser! > 0
+    const {count:likeCountData} = await supabase.from("likes").select("*", {head:true, count:"exact"}).eq("post_id", props.post.id)
+    likeCount.value = likeCountData?likeCountData:0
+    const {count:likedByUserCount} = await supabase.from("likes").select("*", {head:true, count:"exact"}).eq("user_id", user.value?.id).eq("post_id", props.post.id)
+    liked.value = likedByUserCount! > 0
 }
 
+const updateRepost = async () => {
+    const {count:repostCountData} = await supabase.from("reposts").select("*", {head:true, count:"exact"}).eq("post_id", props.post.id)
+    repostCount.value = repostCountData? repostCountData:0
+    const {count:repostedByUserCount} = await supabase.from("reposts").select("*", {head:true, count:"exact"}).eq("post_id", props.post.id).eq("user_id", user.value?.id)
+    reposted.value = repostedByUserCount! > 0
+
+}
+
+const repost = async () => {
+    try {
+        const data = {
+            id: uuidv4(),
+            post_id: props.post.id,
+            user_id: user.value?.id,
+        }
+        const {error} = await supabase.from("reposts").insert(data);
+        if(error) throw(error)
+        updateRepost()
+    } catch(err) {
+        alert(JSON.stringify(err))
+    }
+}
+
+//if user exists check whether the user has already liked the post
 if(user) {
     updateLike()
+    updateRepost()
 }
 
 const likeIconState = computed(()=> liked.value?"material-symbols:favorite":"material-symbols:favorite-outline")
+
 const like =  async() => {
     if(user.value) {
         if(liked.value) {
@@ -81,10 +113,10 @@ const openPost = ()=>{
             <span class="font-bold text-black text-md">{{ likeCount }}</span>
         </div>
         <div>
-            <button @click.prevent="like" class="mr-2">
-                <icon :class="liked?'text-neu-yellow':'text-neu-green'" class="text-neu-green drop-shadow-neu-border" name="ant-design:retweet-outlined" size="24" />
+            <button @click.prevent="repost" class="mr-2">
+                <icon :class="reposted?'text-neu-yellow':'text-neu-green'" class="drop-shadow-neu-border" name="ant-design:retweet-outlined" size="24" />
             </button>
-            <span class="font-bold text-black text-md">{{ likeCount }}</span>
+                <span class="font-bold text-black text-md">{{ repostCount }}</span>
         </div>
         <div>
             <icon class="mr-2 text-neu-green drop-shadow-neu-border" name="material-symbols:mode-comment-outline" size="24"/>
