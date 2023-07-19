@@ -1,6 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', 'nuxt-icon', '@nuxtjs/supabase'],
-  pages:true,
-})
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "nuxt-icon",
+    "@nuxtjs/supabase",
+    [
+      "@nuxtjs/toast",
+      {
+        position: "top-center",
+      },
+    ],
+  ],
+  pages: true,
+});
