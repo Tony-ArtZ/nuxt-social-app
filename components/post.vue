@@ -97,14 +97,18 @@ const likeIconState = computed(() => liked.value ? "material-symbols:favorite" :
 
 
 const openPost = () => {
-    router.push(`/post/${props.post.id}`)
+    //router.push(`/post/${props.post.id}`)
 }
+const navigateToUser = () => {
+    router.push(`/user/${props.post.user_id}`)
+}
+
 </script>
 
 <template>
     <div @click.prevent="openPost"
         class="w-full p-4 my-2 border-4 border-black border-solid even:bg-neu-yellow-light odd:bg-neu-green-light shadow-neu-black first:border-t-2">
-        <div class="flex items-center w-full gap-4">
+        <div @click.prevent="navigateToUser" class="z-20 flex items-center w-full gap-4">
             <img :src="post.users.profile_picture"
                 class="z-10 object-cover w-12 border-black rounded-full drop-shadow-neu-border aspect-square" />
             <div>

@@ -5,12 +5,6 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "nuxt-icon",
     "@nuxtjs/supabase",
-    [
-      "@nuxtjs/toast",
-      {
-        position: "top-center",
-      },
-    ],
   ],
   pages: true,
 });

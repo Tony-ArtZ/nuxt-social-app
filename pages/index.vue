@@ -7,6 +7,7 @@ const client = useSupabaseClient()
 
 const {data:posts, error} = await client.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count), reposts(count)").order("created_at", {ascending: false})
 
+
 definePageMeta({ middleware: ['userdata'] })
 </script>
 

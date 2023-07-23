@@ -34,11 +34,19 @@ const userData = ref(data[0]);
         <h6 class="text-sm text-neu-yellow drop-shadow-neu-border">@{{ userData.user_name }}</h6>
       </div>
       <NuxtLink
-      to="/editaccount"
-      class="float-right p-2 mt-12 mr-2 text-sm font-bold text-black border-2 border-black rounded-full bg-neu-green shadow-neu-black transition-all ease-in-out duration-300"
+        v-if="user && user.id === id"
+        to="/editaccount"
+        class="float-right p-2 mt-12 mr-2 text-sm font-bold text-black border-2 border-black rounded-full bg-neu-green shadow-neu-black transition-all ease-in-out duration-300"
       >
         Edit Profile
-      </NuxtLink>
+      </NuxtLink>      
+      <button
+        v-else-if="user && user.id !== id"
+        to="/editaccount"
+        class="float-right p-2 px-4 mt-12 mr-2 text-sm font-bold text-black border-2 border-black rounded-full bg-neu-green shadow-neu-black transition-all ease-in-out duration-300"
+      >
+        Follow
+      </button>
     </section>
       <section class="p-4 font-bold text-black border-b-2 border-sky-950">
         {{ userData.description }}
