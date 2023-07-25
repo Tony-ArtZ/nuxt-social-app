@@ -10,7 +10,6 @@ interface Post {
     picture: string,
     user_id: string,
     likes: [{ count: number }],
-    reposts: [{ count: number }],
     posts: [{ count: number }],
     users: {
         display_name: string,
@@ -29,7 +28,6 @@ const user = useSupabaseUser();
 const router = useRouter();
 
 let likeCount = ref(props.post.likes[0].count)
-let repostCount = ref(props.post.reposts[0].count)
 let liked = ref(false)
 let reposted = ref(false)
 
@@ -38,28 +36,17 @@ const updateLike = async () => {
     const { count: likeCountData } = await supabase.from("likes").select("*", { head: true, count: "exact" }).eq("post_id", props.post.id)
     likeCount.value = likeCountData ? likeCountData : 0
     const { count: likedByUserCount } = await supabase.from("likes").select("*", { head: true, count: "exact" }).eq("user_id", user.value?.id).eq("post_id", props.post.id)
-    liked.value = likedByUserCount! > 0
+    liked.value = likedByUserCount! > 0;
 }
 
 // fetch and update local variables for Likes
 const updateRepost = async () => {
-    const { count: repostCountData } = await supabase.from("reposts").select("*", { head: true, count: "exact" }).eq("post_id", props.post.id)
-    repostCount.value = repostCountData ? repostCountData : 0
-    const { count: repostedByUserCount } = await supabase.from("reposts").select("*", { head: true, count: "exact" }).eq("post_id", props.post.id).eq("user_id", user.value?.id)
-    reposted.value = repostedByUserCount! > 0
 
 }
 
 // handle repost, create a repost if repost entry doesn't exists else delete the entry
 const repost = async () => {
     try {
-        const data = {
-            id: uuidv4(),
-            post_id: props.post.id,
-            user_id: user.value?.id,
-        }
-        const { error } = await supabase.from("reposts").insert(data);
-        if (error) throw (error)
         updateRepost()
     } catch (err) {
         alert(JSON.stringify(err))
@@ -72,11 +59,11 @@ const like = async () => {
         if (user.value) {
             if (liked.value) {
                 const { error } = await supabase.from("likes").delete().eq("user_id", user.value.id).eq("post_id", props.post.id)
-                if(error) throw(error)
+                if (error) throw (error)
             }
             else {
                 const { error } = await supabase.from("likes").insert({ post_id: props.post.id, user_id: user.value.id })
-                if(error) throw(error)
+                if (error) throw (error)
             }
 
             updateLike()
@@ -99,6 +86,7 @@ const likeIconState = computed(() => liked.value ? "material-symbols:favorite" :
 const openPost = () => {
     //router.push(`/post/${props.post.id}`)
 }
+
 const navigateToUser = () => {
     router.push(`/user/${props.post.user_id}`)
 }
@@ -142,5 +130,6 @@ const navigateToUser = () => {
                     size="24" />
                 <span class="font-bold text-black text-md">{{ post.posts[0].count }}</span>
             </div>
-    </section>
-</div></template>
+        </section>
+    </div>
+</template>
