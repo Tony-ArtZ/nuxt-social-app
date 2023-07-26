@@ -4,7 +4,8 @@ const user = useSupabaseUser();
 const supabase = useSupabaseClient();
 
 const searchQuery = ref(route.query.search);
-const { data, error } = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count)").ilike("content", `%${searchQuery.value}%`).order("created_at", { ascending: false })
+const { data, error } = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").ilike("content", `%${searchQuery.value}%`).order("created_at", { ascending: false })
+console.error(error)
 let posts = ref(data)
 console.log(route.query.search)
 
@@ -12,7 +13,7 @@ console.log(searchQuery.value, posts.value)
 watch(()=>route.query.search, async (value) => {
   searchQuery.value = value
   console.log(route.query.search)
-  const { data, error } = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count)").ilike("content", `%${value}%`).order("created_at", { ascending: false })
+  const { data, error } = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").ilike("content", `%${value}%`).order("created_at", { ascending: false })
   posts.value = data
 })
 </script>
