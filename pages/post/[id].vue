@@ -32,7 +32,7 @@ let content = ref("");
 //Get Post data
 //const { data, error } = await client.from("users").select("*").eq("id", id);
 const {data, error:postError} = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").eq("id", id);
-const {data:comments, error:commentError} = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count), reposts(count)").eq("reply_to", id);
+const {data:comments, error:commentError} = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").eq("reply_to", id);
 //const {data:replyTo, error:replyToError} = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").eq("id", data![0].reply_to);
 
 

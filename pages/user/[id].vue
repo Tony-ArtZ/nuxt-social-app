@@ -43,7 +43,6 @@ const userData = ref(data[0]);
       </NuxtLink>      
       <button
         v-else-if="user && user.id !== id"
-        to="/editaccount"
         class="float-right p-2 px-4 mt-12 mr-2 text-sm font-bold text-black border-2 border-black rounded-full bg-neu-green shadow-neu-black transition-all ease-in-out duration-300"
       >
         Follow

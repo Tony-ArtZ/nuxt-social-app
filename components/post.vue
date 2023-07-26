@@ -9,6 +9,7 @@ interface Post {
     id: string,
     picture: string,
     user_id: string,
+    reply_to: string,
     likes: [{ count: number }],
     posts: [{ count: number }],
     users: {
@@ -30,6 +31,18 @@ const router = useRouter();
 let likeCount = ref(props.post.likes[0].count)
 let liked = ref(false)
 let reposted = ref(false)
+
+let postReplyName = ref()
+
+if (props.post.reply_to) {
+    const { data, error } = await supabase.from("posts").select("*, users(id, display_name, user_name)").eq("id", props.post.reply_to)
+    if (data && !error) {
+        postReplyName.value = data[0].users;
+    }
+    else {
+        console.log(error)
+    }
+}
 
 // fetch and update local variables for Likes
 const updateLike = async () => {
@@ -84,11 +97,11 @@ const likeIconState = computed(() => liked.value ? "material-symbols:favorite" :
 
 
 const openPost = () => {
-    //router.push(`/post/${props.post.id}`)
+    router.push(`/post/${props.post.id}`)
 }
 
-const navigateToUser = () => {
-    router.push(`/user/${props.post.user_id}`)
+const navigateToUser = (userId:string) => {
+    router.push(`/user/${userId}`)
 }
 
 </script>
@@ -96,7 +109,8 @@ const navigateToUser = () => {
 <template>
     <div @click.prevent="openPost"
         class="w-full p-4 my-2 border-4 border-black border-solid even:bg-neu-yellow-light odd:bg-neu-green-light shadow-neu-black first:border-t-2">
-        <div @click.prevent="navigateToUser" class="z-20 flex items-center w-full gap-4">
+        <section v-if="postReplyName" class="mb-4 font-bold">replying to <span @click.stop.prevent="navigateToUser(postReplyName.id)" class="text-neu-yellow font-normal hover:cursor-pointer drop-shadow-neu-border">@{{ postReplyName.user_name }}</span></section>
+        <div @click.stop.prevent="navigateToUser(props.post.user_id)" class="z-20 flex items-center w-full gap-4">
             <img :src="post.users.profile_picture"
                 class="z-10 object-cover w-12 border-black rounded-full drop-shadow-neu-border aspect-square" />
             <div>
@@ -123,7 +137,7 @@ const navigateToUser = () => {
                     <icon :class="reposted ? 'text-neu-yellow' : 'text-neu-green'" class="drop-shadow-neu-border"
                         name="ant-design:retweet-outlined" size="24" />
                 </button>
-                <span class="font-bold text-black text-md">{{ repostCount }}</span>
+                <span class="font-bold text-black text-md">0</span>
             </div>
             <div>
                 <icon class="mr-2 text-neu-green drop-shadow-neu-border" name="material-symbols:mode-comment-outline"

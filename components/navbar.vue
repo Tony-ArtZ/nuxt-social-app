@@ -26,8 +26,18 @@ const createPost = () => {
 }
 
 const search = () => {
-    router.push({path:"/search", query:{search: searchQuery.value}})
+    router.push({ path: "/search", query: { search: searchQuery.value } })
 }
+
+
+const handleKeyPress = (e) => {
+    if (e.key == "Enter") {
+        search();
+    }
+}
+onMounted(() => {
+    document.addEventListener("keyup", handleKeyPress);
+})
 
 </script>
 
@@ -39,12 +49,13 @@ const search = () => {
         </button>
         <div class="flex border-4 border-black border-solid rounded-full shadow-neu-border w-52 bg-neu-green-light">
             <input v-model="searchQuery" class="w-full h-10 p-4 font-bold text-black bg-transparent rounded-l-full" />
-            <button @click.prevent="search" class="w-12 font-bold border-l-4 border-black rounded-r-full bg-neu-yellow grid place-content-center text-sky-950">
+            <button @click.prevent="search"
+                class="w-12 font-bold border-l-4 border-black rounded-r-full bg-neu-yellow grid place-content-center text-sky-950">
                 <Icon name="material-symbols:search" size="22" />
             </button>
         </div>
         <button v-if="user" @click.prevent="createPost" class="text-neu-green drop-shadow-neu-border">
-            <Icon  name="material-symbols:add-box" size="32" />
+            <Icon name="material-symbols:add-box" size="32" />
         </button>
         <button v-else @click.prevent="signIn" class="text-neu-green drop-shadow-neu-border">
             <Icon name="material-symbols:person-add" size="32" />
