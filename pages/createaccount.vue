@@ -6,6 +6,7 @@ const user = useSupabaseUser();
 let imageBlob = ref();
 let previewImage = ref();
 let userName = ref();
+let loading = ref(false);
 const router = useRouter();
 
 const imageChangeHandler = (e) => {
@@ -15,6 +16,7 @@ const imageChangeHandler = (e) => {
 };
 
 const createAccount = async () => {
+  loading.value = true;
   try {
     if (!imageBlob.value || imageBlob.value.length === 0) {
       throw new Error("You must select an image to upload.");
@@ -38,9 +40,13 @@ const createAccount = async () => {
     let { data, error } = await supabase.from("users").upsert(userUploadData);
 
     if (error) throw error;
-    else router.push(`/user/${user.value.id}`);
+    else {
+        router.push(`/user/${user.value.id}`);
+        loading.value = false;
+    }
   } catch (error) {
     alert(JSON.stringify(error));
+    loading.value = false;
   }
 };
 </script>
@@ -89,7 +95,8 @@ const createAccount = async () => {
         @click.prevent="createAccount"
         class="p-6 text-lg font-bold border-4 border-black bg-neu-green w-44 shadow-neu-black rounded-xl"
       >
-        Submit
+          <span v-if="!loading">Submit</span>
+          <loadingSpinner v-if="loading"/>
       </button>
     </section>
   </div>

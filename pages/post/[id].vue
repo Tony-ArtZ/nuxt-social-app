@@ -28,16 +28,22 @@ const id = route.params.id;
 const user = useSupabaseUser();
 const supabase = useSupabaseClient();
 let content = ref("");
+const comments = ref()
 
 //Get Post data
 //const { data, error } = await client.from("users").select("*").eq("id", id);
 const {data, error:postError} = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").eq("id", id);
-const {data:comments, error:commentError} = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").eq("reply_to", id);
+const post:Post = data![0]
+
+const updateComments = async () => {
+    const {data:commentData, error:commentError} = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").eq("reply_to", id);
+    comments.value = commentData;
+}
+
+updateComments();
 //const {data:replyTo, error:replyToError} = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").eq("id", data![0].reply_to);
 
 
-console.log(JSON.stringify(data))
-const post:Post = data![0]
 
 
 let likeCount = ref(post?.likes[0].count);
@@ -98,7 +104,9 @@ const createPost = async () => {
         }*/
 
       const {error} = await supabase.from("posts").insert(postData);
+
       if(error) throw error;
+      else updateComments()
     }
   catch (error) {
     alert(error)

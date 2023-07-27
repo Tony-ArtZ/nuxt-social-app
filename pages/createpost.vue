@@ -10,6 +10,7 @@ let charCount = computed(() => content.value.length)
 const charCountClass = computed(() => charCount.value === charLimit?"text-red-400":"")
 let imageBlob = ref()
 let imagePreview = ref()
+let loading = ref(false)
 
 const removeImageHandler = () => {
   imageBlob.value = null;
@@ -23,6 +24,7 @@ const imageChangeHandler = (e) => {
 };
 
 const createPost = async () => {
+  loading.value = true;
     try {
       const postId = uuidv4()
 
@@ -46,10 +48,14 @@ const createPost = async () => {
 
       const {error} = await supabase.from("posts").insert(postData)
       if(error) throw error
-      else router.push("/")
+      else {
+        router.push("/");
+        loading.value = false;
+      }
     }
   catch (error) {
     alert(error)
+    loading.value = false;
   }
 }
 </script>
@@ -76,7 +82,10 @@ const createPost = async () => {
           Add Image
         </div>
       </label>
-      <button @click.prevent="createPost" class="p-6 text-lg font-bold border-4 border-black shadow-neu-black bg-neu-green w-44 rounded-xl">Create Post</button>
+      <button @click.prevent="createPost" class="p-6 text-lg font-bold border-4 border-black shadow-neu-black bg-neu-green w-44 rounded-xl">
+          <span v-if="!loading">Submit</span>
+          <loadingSpinner v-if="loading"/>
+      </button>
     </section>
   </div>
 </template>
