@@ -7,7 +7,6 @@ let loading = ref(false)
 
 //TODO: Add single function for getting posts
 const { data, error } = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").ilike("content", `%${searchQuery.value}%`).order("created_at", { ascending: false })
-console.error(error)
 
 let posts = ref(data)
 

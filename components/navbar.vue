@@ -42,7 +42,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="fixed z-20 flex items-center w-full h-16 shadow-2xl bg-neu-yellow-light justify-evenly">
+    <div class="fixed z-50 flex items-center w-full h-16 shadow-2xl bg-neu-yellow-light justify-evenly">
         <sidebar :side-bar-open="sideBar" @side-bar-close="closeSideBar" />
         <button @click.prevent="openSideBar" class="text-neu-green drop-shadow-neu-border">
             <Icon name="material-symbols:menu" size="32" />
