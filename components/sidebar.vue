@@ -9,12 +9,11 @@ const emmits = defineEmits(["sideBarClose"]);
 const router = useRouter();
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
-const userData = ref();
+const userData = ref(null);
 
 if (user.value) {
-    const { data, error } = await supabase.from("users").select("*");
+    const { data, error } = await supabase.from("users").select("*").eq("id", user.value.id);
     userData.value = data[0];
-    console.log(userData.value)
 }
 // If closed then move sidebar off screen using reactive vue class bind 
 let sideBarClass = computed(() =>
@@ -32,29 +31,40 @@ const logIn = () => {
 const openUserProfile = () => {
     router.push(`/user/${user.value.id}`);
 }
+
+watch(user, async (value) => {
+    if(value) {
+        const { data, error } = await supabase.from("users").select("*").eq("id", value.id);
+        userData.value = data[0];
+    }
+
+    else {
+        userData.value = null;
+    }
+})
 </script>
 
 <template>
     <div :class="sideBarClass"
-        class="absolute top-0  drop-shadow-2xl left-0 z-50 w-64 h-screen p-5 bg-neu-yellow-light transform transition-all ease-in-out duration-300">
+        class="absolute top-0 left-0 z-50 w-64 h-screen p-5 drop-shadow-2xl bg-neu-yellow-light transform transition-all ease-in-out duration-300">
         <button @click.prevent="$emit('sideBarClose')" class="text-neu-green drop-shadow-neu-border">
             <Icon name="material-symbols:close" size="32" />
         </button>
-        <section v-if="userData" @click="openUserProfile" class="flex mt-8 flex-row">
+        <section v-if="user && userData" @click="openUserProfile" class="flex flex-row mt-8">
             <div class="h-full">
                 <img :src="userData.profile_picture"
-                    class="rounded-full w-16 aspect-square object-cover border-neu-green drop-shadow-neu-border border-2" />
+                    class="object-cover w-16 border-2 rounded-full aspect-square border-neu-green drop-shadow-neu-border" />
             </div>
-            <div class="h-full pl-4 flex justify-center flex-col">
-                <h2 class="text-black font-bold text-xl">
+            <div class="flex flex-col justify-center h-full pl-4">
+                <h2 class="text-xl font-bold text-black">
                     {{ userData.display_name }}
                 </h2>
-                <h4 class="text-neu-yellow text-sm drop-shadow-neu-border">
+                <h4 class="text-sm text-neu-yellow drop-shadow-neu-border">
                     @{{ userData.user_name }}
                 </h4>
             </div>
         </section>
-        <section class="mt-8 border-t-2 border-black py-8">
+        <section class="py-8 mt-8 border-t-2 border-black">
             <!--Home-->
             <NuxtLink to="/"
                 class="flex items-center p-2 mb-4 text-2xl text-black bg-white border-2 border-black shadow-neu-border gap-2 first:border-t-2">
@@ -71,14 +81,14 @@ const openUserProfile = () => {
                 <Icon class="text-neu-yellow drop-shadow-neu-border" name="material-symbols:login" size="24" />Login
             </NuxtLink>
         </section>
-        <section class="w-full py-2 border-t-2 border-black mt-4 border-solid">
+        <section class="w-full py-2 mt-4 border-t-2 border-black border-solid">
             <div class="w-full">
                 <button @click="signOut" v-if="user"
-                    class="text-lg float-right flex items-center gap-2 text-neu-green drop-shadow-neu-border">SignOut
+                    class="flex items-center float-right text-lg gap-2 text-neu-green drop-shadow-neu-border">SignOut
                     <Icon class="text-neu-green drop-shadow-neu-border" name="ph:sign-out-fill" size="24" />
                 </button>
                 <button @click="logIn" v-if="!user"
-                    class="text-lg float-right flex items-center gap-2 text-neu-green drop-shadow-neu-border">LogIn
+                    class="flex items-center float-right text-lg gap-2 text-neu-green drop-shadow-neu-border">LogIn
                     <Icon class="text-neu-green drop-shadow-neu-border" name="ph:sign-in-fill" size="24" />
                 </button>
             </div>
