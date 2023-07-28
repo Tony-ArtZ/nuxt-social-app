@@ -10,8 +10,8 @@ interface Post {
     picture: string,
     user_id: string,
     reply_to: string,
-    likes: [{ count: number }],
-    posts: [{ count: number }],
+    likes: { count: number },
+    posts: { count: number },
     users: {
         display_name: string,
         profile_picture: string,
@@ -28,7 +28,7 @@ const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const router = useRouter();
 
-let likeCount = ref(props.post.likes[0].count)
+let likeCount = ref(props.post.likes.count)
 let liked = ref(false)
 let reposted = ref(false)
 
@@ -60,6 +60,8 @@ const updateRepost = async () => {
 // handle repost, create a repost if repost entry doesn't exists else delete the entry
 const repost = async () => {
     try {
+        const repostId = uuidv4()
+        const {error} = await supabase.from("reposts").insert({id:repostId, post_id: props.post.id, user_id: user?.value?.id})
         updateRepost()
     } catch (err) {
         alert(JSON.stringify(err))
@@ -142,7 +144,7 @@ const navigateToUser = (userId:string) => {
             <div>
                 <icon class="mr-2 text-neu-green drop-shadow-neu-border" name="material-symbols:mode-comment-outline"
                     size="24" />
-                <span class="font-bold text-black text-md">{{ post.posts[0].count }}</span>
+                <span class="font-bold text-black text-md">{{ post.posts.count }}</span>
             </div>
         </section>
     </div>

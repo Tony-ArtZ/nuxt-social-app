@@ -11,7 +11,7 @@ const followCount = ref(0);
 
 //Get User data
 const { data, error } = await client.from("users").select("*").eq("id", id);
-const { data: posts, error: postError } = await client.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").eq("user_id", id).order("created_at", { ascending: false })
+const { data: posts, error: postError } = await client.rpc('get_user_posts', {userid: id});
 // const { count: followCount, error: followCountError } = await client.from("follows").select('*', { count: 'exact', head: true }).eq("following", id);
 const { count: followingCount, error: followingCountError } = await client.from("follows").select('*', { count: 'exact', head: true }).eq("followed_by", id);
 

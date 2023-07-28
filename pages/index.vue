@@ -19,12 +19,14 @@ const getPosts = async () => {
   loading.value = true;
   switch (selectedFilter.value) {
     case 0:
-      const { data: latestPostData, error: latestPostError } = await client.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").is("reply_to", null).order("created_at", { ascending: false });
+      const { data: latestPostData, error: latestPostError } = await client.rpc('get_nonreply_reposts');
       posts.value = latestPostData;
+      console.log(latestPostData)
       break;
     case 1:
-      const { data: followingPostData, error: followingPostError } = await client.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").is("reply_to", null).eq("user_id", user.value.id).order("created_at", { ascending: false });
-      posts.value = followingPostData;
+      const { data, error } = await client.rpc('get_following_reposts', { userid: user.value.id })
+      console.log(data)
+      posts.value = data;
       break;
   }
   loading.value = false;
