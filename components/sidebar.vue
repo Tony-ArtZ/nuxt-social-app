@@ -10,11 +10,17 @@ const router = useRouter();
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const userData = ref(null);
+const followData = reactive({followCount:0, followingCount:0});
 
 if (user.value) {
     const { data, error } = await supabase.from("users").select("*").eq("id", user.value.id);
     userData.value = data[0];
+    const { count: followCount, error: followCountError } = await supabase.from("follows").select('*', { count: 'exact', head: true }).eq("following", user.value.id);
+    const { count: followingCount, error: followingCountError } = await supabase.from("follows").select('*', { count: 'exact', head: true }).eq("followed_by", user.value.id);
+    followData.followCount = followCount;
+    followData.followingCount = followingCount;
 }
+
 // If closed then move sidebar off screen using reactive vue class bind 
 let sideBarClass = computed(() =>
     props.sideBarOpen ? "" : "-translate-x-[100rem]"
@@ -50,6 +56,7 @@ watch(user, async (value) => {
         <button @click.prevent="$emit('sideBarClose')" class="text-neu-green drop-shadow-neu-border">
             <Icon name="material-symbols:close" size="32" />
         </button>
+        <div class="flex flex-col justify-center w-full">
         <section v-if="user && userData" @click="openUserProfile" class="flex flex-row mt-8">
             <div class="h-full">
                 <img :src="userData.profile_picture"
@@ -62,8 +69,16 @@ watch(user, async (value) => {
                 <h4 class="text-sm text-neu-yellow drop-shadow-neu-border">
                     @{{ userData.user_name }}
                 </h4>
+
             </div>
         </section>
+          <section class="flex flex-row mt-6 gap-4">
+          <div class="text-black"> <span class="text-sm font-normal text-neu-green drop-shadow-neu-border">{{
+            followData.followingCount }}</span> Following</div>
+          <div class="text-black"> <span class="text-sm font-normal text-neu-yellow drop-shadow-neu-border">{{
+            followData.followCount }}</span> Followers</div>
+        </section>
+        </div>
         <section class="py-8 mt-8 border-t-2 border-black">
             <!--Home-->
             <NuxtLink to="/"
