@@ -10,14 +10,12 @@ interface Post {
     picture: string,
     user_id: string,
     reply_to: string,
-    likes: { count: number },
-    posts: { count: number },
-    users: {
-        display_name: string,
-        profile_picture: string,
-        user_name: string
-    }
-}
+    like_count: number,
+    reply_count: number,
+    display_name: string,
+    profile_picture: string,
+    user_name: string
+};
 
 const props = defineProps<{
     post: Post,
@@ -28,7 +26,7 @@ const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const router = useRouter();
 
-let likeCount = ref(props.post.likes.count)
+let likeCount = ref(props.post.like_count)
 let liked = ref(false)
 let reposted = ref(false)
 
@@ -113,11 +111,11 @@ const navigateToUser = (userId:string) => {
         class="w-full p-4 my-2 border-4 border-black border-solid even:bg-neu-yellow-light odd:bg-neu-green-light shadow-neu-black first:border-t-2">
         <section v-if="postReplyName" class="mb-4 font-bold">replying to <span @click.stop.prevent="navigateToUser(postReplyName.id)" class="text-neu-yellow font-normal hover:cursor-pointer drop-shadow-neu-border">@{{ postReplyName.user_name }}</span></section>
         <div @click.stop.prevent="navigateToUser(props.post.user_id)" class="z-20 flex items-center w-full gap-4">
-            <img :src="post.users.profile_picture"
+            <img :src="post.profile_picture"
                 class="z-10 object-cover w-12 border-black rounded-full drop-shadow-neu-border aspect-square" />
             <div>
-                <h6 class="block font-bold text-neu-green drop-shadow-neu-border text-md">{{ post.users.display_name }}</h6>
-                <h6 class="block text-sm font-bold text-black">@{{ post.users.user_name }}</h6>
+                <h6 class="block font-bold text-neu-green drop-shadow-neu-border text-md">{{ post.display_name }}</h6>
+                <h6 class="block text-sm font-bold text-black">@{{ post.user_name }}</h6>
             </div>
         </div>
         <p class="my-4 ml-4 text-black">
@@ -144,7 +142,7 @@ const navigateToUser = (userId:string) => {
             <div>
                 <icon class="mr-2 text-neu-green drop-shadow-neu-border" name="material-symbols:mode-comment-outline"
                     size="24" />
-                <span class="font-bold text-black text-md">{{ post.posts.count }}</span>
+                <span class="font-bold text-black text-md">{{ post.reply_count }}</span>
             </div>
         </section>
     </div>

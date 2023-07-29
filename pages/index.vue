@@ -24,7 +24,7 @@ const getPosts = async () => {
       console.log(latestPostData)
       break;
     case 1:
-      const { data, error } = await client.rpc('get_following_reposts', { userid: user.value.id })
+      const { data, error } = await client.rpc('get_following_posts', { userid: user.value.id })
       console.log(data)
       posts.value = data;
       break;

@@ -72,7 +72,7 @@ watch(user, async (value) => {
 
             </div>
         </section>
-          <section class="flex flex-row mt-6 gap-4">
+          <section v-if="user && userData" class="flex flex-row mt-6 gap-4">
           <div class="text-black"> <span class="text-sm font-normal text-neu-green drop-shadow-neu-border">{{
             followData.followingCount }}</span> Following</div>
           <div class="text-black"> <span class="text-sm font-normal text-neu-yellow drop-shadow-neu-border">{{
