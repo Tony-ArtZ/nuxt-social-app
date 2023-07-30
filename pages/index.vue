@@ -7,6 +7,7 @@ const client = useSupabaseClient();
 const loading = ref(false);
 const posts = ref();
 
+
 //Filter Ids :
 //0 -> Latest
 //1 -> Following
@@ -53,7 +54,7 @@ definePageMeta({ middleware: ['userdata'] });
   </section>
   <section class="flex flex-col justify-center px-4 py-[7.5rem] overflow-scroll gap-4">
     <div v-if="loading" class="w-full grid place-items-center mt-8">
-      <loading-spinner/>
+      <loading-spinner />
     </div>
     <post v-if="posts && !loading" v-for="post in posts" :post="post" />
   </section>

@@ -12,14 +12,18 @@ const user = useSupabaseUser();
 const userData = ref(null);
 const followData = reactive({followCount:0, followingCount:0});
 
-if (user.value) {
-    const { data, error } = await supabase.from("users").select("*").eq("id", user.value.id);
-    userData.value = data[0];
-    const { count: followCount, error: followCountError } = await supabase.from("follows").select('*', { count: 'exact', head: true }).eq("following", user.value.id);
-    const { count: followingCount, error: followingCountError } = await supabase.from("follows").select('*', { count: 'exact', head: true }).eq("followed_by", user.value.id);
-    followData.followCount = followCount;
-    followData.followingCount = followingCount;
-}
+onMounted (()=> {
+    if (user.value) {
+        const { data, error } = await supabase.from("users").select("*").eq("id", user.value.id);
+        userData.value = data[0];
+        const { count: followCount, error: followCountError } = await supabase.from("follows").select('*', { count: 'exact', head: true }).eq("following", user.value.id);
+        const { count: followingCount, error: followingCountError } = await supabase.from("follows").select('*', { count: 'exact', head: true }).eq("followed_by", user.value.id);
+    
+        console.log(followCount, followCountError, followingCountError);
+        followData.followCount = followCount;
+        followData.followingCount = followingCount;
+    }
+})
 
 // If closed then move sidebar off screen using reactive vue class bind 
 let sideBarClass = computed(() =>
