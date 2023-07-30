@@ -8,12 +8,39 @@ const user = useSupabaseUser();
 const client = useSupabaseClient();
 const following = ref(false);
 const followCount = ref(0);
+const loading = ref(false);
+const posts = ref();
 
 //Get User data
 const { data, error } = await client.from("users").select("*").eq("id", id);
-const { data: posts, error: postError } = await client.rpc('get_user_posts', {userid: id});
 // const { count: followCount, error: followCountError } = await client.from("follows").select('*', { count: 'exact', head: true }).eq("following", id);
 const { count: followingCount, error: followingCountError } = await client.from("follows").select('*', { count: 'exact', head: true }).eq("followed_by", id);
+
+
+//Filter Ids :
+//0 -> Latest
+//1 -> Following
+const filterActiveStyle = "bg-neu-green font-bold";
+const filterInactiveStyle = "bg-white font-normal";
+
+const selectedFilter = ref(0);
+
+const getPosts = async () => {
+  loading.value = true;
+  switch (selectedFilter.value) {
+    case 0:
+      const { data: userPosts, error: userPostError } = await client.rpc('get_user_posts', {userid: id});
+      posts.value = userPosts;
+      console.log(userPosts)
+      break;
+    case 1:
+      const { data: userReposts, error:userRepostsError } = await client.rpc('get_following_reposts', { userid: id})
+      console.log(userReposts)
+      posts.value = userReposts;
+      break;
+  }
+  loading.value = false;
+}
 
 const updateFollowCount = async () => {
   const { count, error: followCountError } = await client.from("follows").select('*', { count: 'exact', head: true }).eq("following", id);
@@ -58,6 +85,16 @@ const follow = async () => {
     console.log(error);
   }
 }
+
+getPosts();
+
+const changeSelected = (filterId) => {
+  const tempFilterId = selectedFilter.value;
+  selectedFilter.value = filterId;
+  if (selectedFilter.value !== tempFilterId) {
+    getPosts();
+  }
+}
 </script>
 
 <template>
@@ -94,8 +131,17 @@ const follow = async () => {
         </section>
       </section>
     </div>
-    <section class="flex flex-col justify-center px-4 pt-4 overflow-scroll gap-4">
-      <post v-for="post in posts" :post="post" />
+    <section class="w-full  z-20 flex justify-between flex-row">
+      <button :class="selectedFilter == 0 ? filterActiveStyle : filterInactiveStyle" @click="changeSelected(0)"
+        class="w-full transition-all duration-300 ease-in-out border-black border-4 first:border-r-0 p-2">Posts</button>
+      <button :class="selectedFilter == 1 ? filterActiveStyle : filterInactiveStyle" @click="changeSelected(1)"
+        class="w-full transition-all duration-300 ease-in-out border-black border-4 first:border-r-0 p-2">Reposts</button>
+    </section>
+    <div v-if="loading" class="w-full grid place-items-center mt-8">
+      <loading-spinner />
+    </div>
+    <section v-if="posts && !loading" class="flex flex-col justify-center px-4 pt-4 overflow-scroll gap-4">
+      <post :reposted="selectedFilter === 1" :user_name="userData.user_name" v-for="post in posts" :post="post" />
     </section>
   </div>
 </template>

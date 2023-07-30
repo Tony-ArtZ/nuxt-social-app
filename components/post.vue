@@ -19,7 +19,8 @@ interface Post {
 
 const props = defineProps<{
     post: Post,
-    replyTo?: String
+    reposted?: boolean,
+    user_name?: string
 }>()
 
 const supabase = useSupabaseClient();
@@ -59,7 +60,7 @@ const updateRepost = async () => {
 const repost = async () => {
     try {
         const repostId = uuidv4()
-        const {error} = await supabase.from("reposts").insert({id:repostId, post_id: props.post.id, user_id: user?.value?.id})
+        const { error } = await supabase.from("reposts").insert({ id: repostId, post_id: props.post.id, user_id: user?.value?.id })
         updateRepost()
     } catch (err) {
         alert(JSON.stringify(err))
@@ -100,7 +101,7 @@ const openPost = () => {
     router.push(`/post/${props.post.id}`)
 }
 
-const navigateToUser = (userId:string) => {
+const navigateToUser = (userId: string) => {
     router.push(`/user/${userId}`)
 }
 
@@ -109,7 +110,13 @@ const navigateToUser = (userId:string) => {
 <template>
     <div @click.prevent="openPost"
         class="w-full p-4 my-2 border-4 border-black border-solid even:bg-neu-yellow-light odd:bg-neu-green-light shadow-neu-black first:border-t-2">
-        <section v-if="postReplyName" class="mb-4 font-bold">replying to <span @click.stop.prevent="navigateToUser(postReplyName.id)" class="text-neu-yellow font-normal hover:cursor-pointer drop-shadow-neu-border">@{{ postReplyName.user_name }}</span></section>
+        <section v-if="props.reposted" class="w-full mb-6">
+            <icon class="drop-shadow-neu-border text-neu-green" name="ei:retweet" size="24"/> retposted by <span class="font-bold">{{ props.user_name }}</span>
+        </section>
+        <section v-if="postReplyName" class="mb-4 font-bold">replying to <span
+                @click.stop.prevent="navigateToUser(postReplyName.id)"
+                class="text-neu-yellow font-normal hover:cursor-pointer drop-shadow-neu-border">@{{ postReplyName.user_name
+                }}</span></section>
         <div @click.stop.prevent="navigateToUser(props.post.user_id)" class="z-20 flex items-center w-full gap-4">
             <img :src="post.profile_picture"
                 class="z-10 object-cover w-12 border-black rounded-full drop-shadow-neu-border aspect-square" />
@@ -144,6 +151,5 @@ const navigateToUser = (userId:string) => {
                     size="24" />
                 <span class="font-bold text-black text-md">{{ post.reply_count }}</span>
             </div>
-        </section>
-    </div>
-</template>
+    </section>
+</div></template>
