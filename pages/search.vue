@@ -6,7 +6,7 @@ const searchQuery = ref(route.query.search);
 let loading = ref(false)
 
 //TODO: Add single function for getting posts
-const { data, error } = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").ilike("content", `%${searchQuery.value}%`).order("created_at", { ascending: false })
+const { data, error } = await supabase.rpc('get_search_posts', {query: searchQuery.value});
 
 let posts = ref(data)
 
@@ -14,7 +14,7 @@ watch(()=>route.query.search, async (value) => {
   loading.value = true;
   searchQuery.value = value
   console.log(route.query.search)
-  const { data, error } = await supabase.from("posts").select("*, users(user_name,profile_picture,display_name), likes(count), posts(count)").ilike("content", `%${value}%`).order("created_at", { ascending: false })
+  const { data, error } = await supabase.rpc('get_search_posts', {query: value});
   loading.value = false;
   posts.value = data;
 })

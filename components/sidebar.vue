@@ -12,7 +12,7 @@ const user = useSupabaseUser();
 const userData = ref(null);
 const followData = reactive({followCount:0, followingCount:0});
 
-onMounted (()=> {
+onMounted (async ()=> {
     if (user.value) {
         const { data, error } = await supabase.from("users").select("*").eq("id", user.value.id);
         userData.value = data[0];
