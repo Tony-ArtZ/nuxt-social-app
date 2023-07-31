@@ -21,17 +21,17 @@ const props = defineProps<{
     post: Post,
     reposted?: boolean,
     user_name?: string
-}>()
+}>();
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const router = useRouter();
 
-let likeCount = ref(props.post.like_count)
-let liked = ref(false)
-let reposted = ref(false)
-
-let postReplyName = ref()
+let likeCount = ref(props.post.like_count);
+let liked = ref(false);
+let reposted = ref(false);
+let repostCount = ref(0);
+let postReplyName = ref();
 
 if (props.post.reply_to) {
     const { data, error } = await supabase.from("posts").select("*, users(id, display_name, user_name)").eq("id", props.post.reply_to)
@@ -53,15 +53,26 @@ const updateLike = async () => {
 
 // fetch and update local variables for Likes
 const updateRepost = async () => {
-
+    const { count: repostCountData, error: repostError } = await supabase.from("reposts").select('*', { count: 'exact', head: true }).eq("post_id", props.post.id);
+    const { count: repostedData, error: repostedError } = await supabase.from("reposts").select('*', { count: 'exact', head: true }).eq("post_id", props.post.id).eq("user_id", user.value?.id);
+    repostCount.value = repostCountData!;
+    console.log(repostCountData, repostCount.value)
+    reposted.value = repostedData ? repostedData > 0 : false;
+    if (repostError)
+        console.error(repostError);
 }
 
 // handle repost, create a repost if repost entry doesn't exists else delete the entry
 const repost = async () => {
     try {
-        const repostId = uuidv4()
-        const { error } = await supabase.from("reposts").insert({ id: repostId, post_id: props.post.id, user_id: user?.value?.id })
-        updateRepost()
+        if (reposted.value) {
+            const { error } = await supabase.from("reposts").delete().eq("post_id", props.post.id).eq("user_id", user.value?.id);
+        }
+        else {
+            const repostId = uuidv4()
+            const { error } = await supabase.from("reposts").insert({ id: repostId, post_id: props.post.id, user_id: user?.value?.id })
+        }
+        updateRepost();
     } catch (err) {
         alert(JSON.stringify(err))
     }
@@ -83,19 +94,18 @@ const like = async () => {
             updateLike()
         }
     } catch (err) {
-        alert(JSON.stringify(err))
+        alert(JSON.stringify(err));
     }
 }
 
 //if user exists check whether the user has already liked the post
 if (user) {
     updateLike()
-    updateRepost()
+    updateRepost();
 }
 
 //if liked use a filled icon otherwise use an outline
 const likeIconState = computed(() => liked.value ? "material-symbols:favorite" : "material-symbols:favorite-outline")
-
 
 const openPost = () => {
     router.push(`/post/${props.post.id}`)
@@ -111,7 +121,8 @@ const navigateToUser = (userId: string) => {
     <div @click.prevent="openPost"
         class="w-full p-4 my-2 border-4 border-black border-solid even:bg-neu-yellow-light odd:bg-neu-green-light shadow-neu-black first:border-t-2">
         <section v-if="props.reposted" class="w-full mb-6">
-            <icon class="drop-shadow-neu-border text-neu-green" name="ei:retweet" size="24"/> retposted by <span class="font-bold">{{ props.user_name }}</span>
+            <icon class="drop-shadow-neu-border text-neu-green" name="ei:retweet" size="24" /> retposted by <span
+                class="font-bold">{{ props.user_name }}</span>
         </section>
         <section v-if="postReplyName" class="mb-4 font-bold">replying to <span
                 @click.stop.prevent="navigateToUser(postReplyName.id)"
@@ -144,12 +155,13 @@ const navigateToUser = (userId: string) => {
                     <icon :class="reposted ? 'text-neu-yellow' : 'text-neu-green'" class="drop-shadow-neu-border"
                         name="ant-design:retweet-outlined" size="24" />
                 </button>
-                <span class="font-bold text-black text-md">0</span>
+                <span class="font-bold text-black text-md">{{ repostCount }}</span>
             </div>
             <div>
                 <icon class="mr-2 text-neu-green drop-shadow-neu-border" name="material-symbols:mode-comment-outline"
                     size="24" />
                 <span class="font-bold text-black text-md">{{ post.reply_count }}</span>
             </div>
-    </section>
-</div></template>
+        </section>
+    </div>
+</template>
