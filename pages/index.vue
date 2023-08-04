@@ -53,7 +53,7 @@ definePageMeta({ middleware: ['userdata'] });
       <button :class="selectedFilter == 1 ? filterActiveStyle : filterInactiveStyle" @click="changeSelected(1)"
         class="w-full transition-all duration-300 ease-in-out border-black border-4 first:border-r-0 p-2">Following</button>
     </section>
-    <section class="flex flex-col justify-center px-4 py-[7.5rem] overflow-scroll gap-4">
+    <section class="flex flex-col justify-center px-4 py-2 overflow-scroll gap-4">
       <div v-if="loading" class="w-full grid place-items-center mt-8">
         <loading-spinner />
       </div>
