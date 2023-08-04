@@ -46,8 +46,8 @@ watch(user, async (value) => {
   <div class="bg-white">
     <navbar />
     <div class="flex-row">
-      <section class="hidden md:block float-left w-64 h-screen bg-neu-yellow-light">
-        <div class="fixed bg-neu-yellow-light h-screen w-64 pt-40 px-4">
+      <section class="hidden fixed md:block min-h-full float-left w-64 bg-neu-yellow-light">
+        <div class="bg-neu-yellow-light h-screen w-64 pt-40 px-4">
           <section v-if="user && userData" @click="openUserProfile" class="flex flex-row">
             <div class="h-full">
               <img :src="userData.profile_picture"
@@ -97,7 +97,9 @@ watch(user, async (value) => {
           </section>
         </div>
       </section>
-      <NuxtPage />
+      <div class="pl-0 md:pl-64">
+        <NuxtPage />
+      </div>
     </div>
   </div>
 </template>
