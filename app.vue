@@ -1,4 +1,14 @@
 <script setup>
+
+useSeoMeta({
+  title: 'Vixi : Feel Alive',
+  ogTitle: 'Vixi',
+  description: 'Start your social life now and Feel Alive! Sign up Today!',
+  ogDescription: 'Start your social life now and Feel Alive! Sign up Today!',
+  ogImage: 'https://drive.google.com/uc?export=view&id=1lz-jgHVQOzRn9kHDOqt3rYddfgQoiv3x',
+  /*twitterCard: 'summary_large_image',*/
+})
+
 const user = useSupabaseUser();
 const supabase = useSupabaseClient();
 const router = useRouter();
