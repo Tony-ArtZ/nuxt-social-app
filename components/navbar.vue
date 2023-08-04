@@ -44,9 +44,12 @@ onMounted(() => {
 <template>
     <div class="fixed z-50 flex items-center w-full h-16 shadow-2xl bg-neu-yellow-light justify-evenly">
         <sidebar :side-bar-open="sideBar" @side-bar-close="closeSideBar" />
-        <button @click.prevent="openSideBar" class="text-neu-green drop-shadow-neu-border">
+        <button @click.prevent="openSideBar" class="md:hidden block text-neu-green drop-shadow-neu-border">
             <Icon name="material-symbols:menu" size="32" />
         </button>
+        <NuxtLink to="/" class="hidden md:block">
+            <img class="w-10 h-10 drop-shadow-neu-border" src="../public/vibely_logo.svg"/>
+        </NuxtLink>
         <div class="flex border-4 border-black border-solid rounded-full shadow-neu-border w-52 bg-neu-green-light">
             <input v-model="searchQuery" class="w-full h-10 p-4 font-bold text-black bg-transparent rounded-l-full" />
             <button @click.prevent="search"

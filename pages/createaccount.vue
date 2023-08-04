@@ -52,7 +52,7 @@ const createAccount = async () => {
 </script>
 
 <template>
-  <div class="w-full h-screen px-4 pt-20 grid place-items-center bg-neu-green-light">
+  <div class="h-screen px-4 pt-20 grid place-items-center bg-neu-green-light">
     <section
       class="flex flex-col items-center w-full p-4 bg-white border-4 border-black shadow-neu-black"
     >

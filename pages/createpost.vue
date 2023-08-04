@@ -61,7 +61,7 @@ const createPost = async () => {
 </script>
 
 <template>
-  <div class="w-full h-screen px-2 bg-neu-green-light grid place-items-center">
+  <div class="h-screen px-2 bg-neu-green-light grid place-items-center">
     <section
       class="flex flex-col items-center w-full p-4 px-6 mt-24 bg-white border-4 border-black border-solid shadow-neu-black">
       <h1 class="w-full p-4 mb-8 text-4xl font-bold text-start">Make a new Post</h1>

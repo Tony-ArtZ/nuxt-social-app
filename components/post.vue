@@ -119,8 +119,8 @@ const navigateToUser = (userId: string) => {
 
 <template>
     <div @click.prevent="openPost"
-        class="w-full p-4 my-2 border-4 border-black border-solid even:bg-neu-yellow-light odd:bg-neu-green-light shadow-neu-black first:border-t-2">
-        <section v-if="props.reposted" class="w-full mb-6">
+        class="p-4 my-2 border-4 border-black border-solid even:bg-neu-yellow-light odd:bg-neu-green-light shadow-neu-black first:border-t-2">
+        <section v-if="props.reposted" class=" mb-6">
             <icon class="drop-shadow-neu-border text-neu-green" name="ei:retweet" size="24" /> retposted by <span
                 class="font-bold">{{ props.user_name }}</span>
         </section>
@@ -128,7 +128,7 @@ const navigateToUser = (userId: string) => {
                 @click.stop.prevent="navigateToUser(postReplyName.id)"
                 class="text-neu-yellow font-normal hover:cursor-pointer drop-shadow-neu-border">@{{ postReplyName.user_name
                 }}</span></section>
-        <div @click.stop.prevent="navigateToUser(props.post.user_id)" class="z-20 flex items-center w-full gap-4">
+        <div @click.stop.prevent="navigateToUser(props.post.user_id)" class="z-20 flex items-center  gap-4">
             <img :src="post.profile_picture"
                 class="z-10 object-cover w-12 border-black rounded-full drop-shadow-neu-border aspect-square" />
             <div>
@@ -139,7 +139,7 @@ const navigateToUser = (userId: string) => {
         <p class="my-4 ml-4 text-black">
             {{ post.content }}
         </p>
-        <div class="w-full grid place-items-center">
+        <div class="grid place-items-center">
             <img v-if="post.picture" :src="post.picture"
                 class="z-10 object-cover mb-4 border-4 border-black w-80 rounded-xl aspect-square" />
         </div>

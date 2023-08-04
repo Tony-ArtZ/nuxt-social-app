@@ -28,7 +28,7 @@ watch(()=>route.query.search, async (value) => {
     </div>
     <div v-else>
       <post v-if="posts.length > 0" v-for="post in posts" :post="post" />
-      <div  class="p-4 mt-16 text-xl font-bold text-center text-black border-4 border-black transform rotate-12 bg-neu-yellow rounded-xl shadow-neu-black" v-else>
+      <div class="p-4 mt-16 text-xl font-bold text-center text-black border-4 border-black transform rotate-12 bg-neu-yellow rounded-xl shadow-neu-black" v-else>
         Sorry, No results found...
       </div>
     </div>

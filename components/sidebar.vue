@@ -57,11 +57,14 @@ watch(user, async (value) => {
 <template>
     <div :class="sideBarClass"
         class="absolute top-0 left-0 z-50 w-64 h-screen p-5 drop-shadow-2xl bg-neu-yellow-light transform transition-all ease-in-out duration-300">
-        <button @click.prevent="$emit('sideBarClose')" class="text-neu-green drop-shadow-neu-border">
+        <button @click.prevent="$emit('sideBarClose')" class="text-neu-green mb-2 drop-shadow-neu-border">
             <Icon name="material-symbols:close" size="32" />
         </button>
+        <NuxtLink to="/" class="w-full grid place-items-center mb-4">
+            <img class="w-10 h-10 drop-shadow-neu-border" src="../public/vibely_logo.svg"/>
+        </NuxtLink>
         <div class="flex flex-col justify-center w-full">
-        <section v-if="user && userData" @click="openUserProfile" class="flex flex-row mt-8">
+        <section v-if="user && userData" @click="openUserProfile" class="flex flex-row mt-2">
             <div class="h-full">
                 <img :src="userData.profile_picture"
                     class="object-cover w-16 border-2 rounded-full aspect-square border-neu-green drop-shadow-neu-border" />
